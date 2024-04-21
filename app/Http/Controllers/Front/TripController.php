@@ -37,7 +37,7 @@ class TripController extends Controller
                 ])->orderBy('from_date', 'ASC');
             }
         ])->first();
-        
+
          $canMakeChart = true;
 
         // remove the last date usually for departure
@@ -127,8 +127,8 @@ class TripController extends Controller
     public function booking($slug)
     {
         $trip = Trip::where('slug', '=', $slug)->first();
-
-        return view('front.trips.booking', compact('trip'));
+        $price_ranges = $trip->people_price_range;
+        return view('front.trips.booking', compact('trip', 'price_ranges'));
     }
 
      public function departureBooking($slug, $departureId)
@@ -138,14 +138,14 @@ class TripController extends Controller
 
         return view('front.trips.departure-booking', compact('trip', 'trip_departure'));
     }
-    
+
     public function privateDepartureBooking(Request $request, $slug)
     {
         $trip = Trip::where('slug', '=', $slug)->first();
         $departure_date = $request->date;
         return view('front.trips.departure-booking', compact('trip', 'departure_date'));
     }
-    
+
     public function search(Request $request)
     {
         $keyword = $request->keyword;
